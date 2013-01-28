@@ -14,4 +14,5 @@ Installation
 * `brew install dotjs`
 * install the browser extension
 * make sure you give chrome self signed SSL from localhost
-* put github.com.js in your ~/.js folder
+* put [github.com.js](https://raw.github.com/snatchev/IssueTracker/master/public/installer/github.com.js) in your ~/.js folder
+  or append it to your existing github.com.js if you have one
