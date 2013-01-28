@@ -17,17 +17,27 @@
       forcePlaceholderSize: true,
       distance: 5,
       create: function(event, ui) {
-        sortIssueIds(1, this);
+        sortIssueIds(findPageNumber(), this);
         //var issueIds = JSON.parse(localStorage[window.location.href]);
         //console.log("created");
       },
       update: function(event, ui) {
         var issueIds = findIssueIds(this);
-        postIssueIds(issueIds, 1);
+        postIssueIds(issueIds, findPageNumber());
         //localStorage[window.location.href] = JSON.stringify(issueIds);
         //console.log("updated");
       }
     });
+  }
+
+  function findPageNumber(){
+    var match = window.location.search.match(/page=(\d+)/);
+    if(match) {
+      return match[1];
+    }
+    else {
+      return null;
+    }
   }
 
   function findIssueIds(table){
@@ -48,7 +58,7 @@
   function sortIssueIds(page, table) {
     var url = IssueTrackerURL + window.location.pathname + "?page=" + page;
     $.get(url, function(data) {
-      var issueIds = data["issue_ids"];
+      var issueIds = data;
       $.each(issueIds, function(idx, val){
         $("#issue_" + val).appendTo(table)
       });

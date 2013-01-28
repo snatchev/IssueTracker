@@ -35,6 +35,7 @@ class IssueTracker < Sinatra::Base
   configure do
     DataMapper.setup(:default, (ENV["DATABASE_URL"] || "sqlite3:///#{Dir.pwd}/db/#{ENV['RACK_ENV']}.sqlite3"))
     DataMapper.auto_upgrade!
+    register Sinatra::CrossOrigin
     enable :cross_origin
   end
 
@@ -52,7 +53,7 @@ class IssueTracker < Sinatra::Base
 
   get '/:user/:repo/issues' do |user, repo|
     issues = Issue.all(github_page: params[:page], repo: "#{user}/#{repo}", order: :position)
-    json issues: []
+    json issues.map{|i| i.github_id }
   end
 
   post '/:user/:repo/issues' do |user,repo|
