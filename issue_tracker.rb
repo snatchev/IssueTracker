@@ -1,6 +1,7 @@
 require 'sinatra/base'
 require 'sinatra/json'
 require 'sinatra/reloader'
+require 'sinatra/cross_origin'
 require 'data_mapper'
 require 'json'
 
@@ -34,6 +35,7 @@ class IssueTracker < Sinatra::Base
   configure do
     DataMapper.setup(:default, (ENV["DATABASE_URL"] || "sqlite3:///#{Dir.pwd}/db/#{ENV['RACK_ENV']}.sqlite3"))
     DataMapper.auto_upgrade!
+    enable :cross_origin
   end
 
   configure :development do

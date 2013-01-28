@@ -70,6 +70,7 @@ GEM
     json (1.7.6)
     json_pure (1.7.6)
     multi_json (1.5.0)
+    pg (0.14.1)
     rack (1.5.0)
     rack-protection (1.3.2)
       rack
@@ -86,6 +87,7 @@ GEM
       rack-test
       sinatra (~> 1.3.0)
       tilt (~> 1.3)
+    sinatra-cross_origin (0.2.0)
     stringex (1.5.1)
     tilt (1.3.3)
     uuidtools (2.1.3)
@@ -98,5 +100,7 @@ DEPENDENCIES
   debugger
   dm-postgres-adapter
   dm-sqlite-adapter
+  pg
   sinatra
   sinatra-contrib
+  sinatra-cross_origin

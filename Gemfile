@@ -2,6 +2,7 @@ source :rubygems
 
 gem 'sinatra'
 gem 'sinatra-contrib'
+gem 'sinatra-cross_origin'
 gem 'data_mapper'
 
 group :development, :test do
@@ -10,5 +11,6 @@ group :development, :test do
 end
 
 group :production do
+  gem 'pg'
   gem 'dm-postgres-adapter'
 end
