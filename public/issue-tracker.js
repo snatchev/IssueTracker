@@ -4,11 +4,32 @@
 (function(){// Issue Tracker
   var IssueTrackerURL = "https://issue-tracker.herokuapp.com";
 
+  function isPrioritySorting(){
+    if(window.location.search.match("sort=priority")){
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+
   function createIssueTrackerButton() {
-    var sortLink = $("#issues_list .list-browser-sorts li").first().clone()
-    $(sortLink).find("a")
-      .text("priority")
-      .attr("href", "#priority")
+    var priorityHref = window.location.href.replace(/sort=\w+/, "sort=priority");
+    var sortLink = $('<a>')
+      .text("Priority")
+      .attr("href", priorityHref)
+      .attr("rel", "nofollow")
+      .addClass("sort-type")
+
+    var sortButton = $('<li>')
+      .append(sortLink)
+      .addClass(function(){
+        if(isPrioritySorting())
+          return "desc";
+        else
+          return "";
+      })
+      .prependTo("#issues_list .list-browser-sorts")
   }
 
   function createIssueTracker() {
@@ -19,13 +40,11 @@
       create: function(event, ui) {
         sortIssueIds(findPageNumber(), this);
         //var issueIds = JSON.parse(localStorage[window.location.href]);
-        //console.log("created");
       },
       update: function(event, ui) {
         var issueIds = findIssueIds(this);
         postIssueIds(issueIds, findPageNumber());
         //localStorage[window.location.href] = JSON.stringify(issueIds);
-        //console.log("updated");
       }
     });
   }
@@ -66,9 +85,15 @@
   }
 
   $(function() {
-    createIssueTracker()
+    createIssueTrackerButton();
+    if(isPrioritySorting()) {
+      createIssueTracker();
+    }
     $(document).on("pjax:complete", function(){
-      createIssueTracker()
+      createIssueTrackerButton();
+      if(isPrioritySorting()) {
+        createIssueTracker();
+      }
     });
   });
 })();
