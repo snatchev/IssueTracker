@@ -8,6 +8,7 @@ gem 'data_mapper'
 group :development, :test do
   gem 'dm-sqlite-adapter'
   gem 'debugger'
+  gem 'database_cleaner'
 end
 
 group :production do

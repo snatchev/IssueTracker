@@ -19,14 +19,21 @@ class Issue
   def self.update_issue_order(github_ids, repo, page)
     issues = []
     github_ids.each_with_index do |gid, idx|
-      issue = first_or_create(github_id: gid, repo: repo)
-      issue.github_page = page
-      issue.position = idx + (page.to_i * PER_PAGE)
-      issue.save
-      issues << issue.github_id
+      issues << gh_issue(gid, repo, page, idx)
     end
     issues
   end
+
+  def self.gh_issue(github_id, repo, page, idx)
+    page = [0, (page.to_i - 1)].max
+    issue = first_or_create(github_id: github_id, repo:repo)
+    issue.github_page = page+1
+    issue.position = idx + (page * PER_PAGE)
+    issue.save
+
+    issue
+  end
+
 end
 
 class IssueTracker < Sinatra::Base
@@ -45,10 +52,7 @@ class IssueTracker < Sinatra::Base
 
   get '/:user/:repo/issue_ids' do |user, repo|
     issues = Issue.all(github_page: params[:page], repo: "#{user}/#{repo}", order: :position)
-    issue_ids = issues.map do |issue|
-      issue.id
-    end
-    json issue_ids
+    json issues.map{|i| i.github_id }
   end
 
   get '/:user/:repo/issues' do |user, repo|
@@ -57,6 +61,7 @@ class IssueTracker < Sinatra::Base
   end
 
   post '/:user/:repo/issues' do |user,repo|
-    json Issue.update_issue_order(params[:issue_ids], "#{user}/#{repo}", params[:page])
+    issues = Issue.update_issue_order(params[:issue_ids], "#{user}/#{repo}", params[:page])
+    json issues.map{|i| i.github_id }
   end
 end
