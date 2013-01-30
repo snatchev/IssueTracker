@@ -11,7 +11,7 @@ IssueTracker use's dotjs to extend the issues page of your repo into PivotalTrac
 Installation
 ---
 
-* `brew install dotjs`
+* install [dotjs](https://github.com/defunkt/dotjs)
 * install the browser extension
 * make sure you give chrome self signed SSL from localhost
 * put [github.com.js](https://raw.github.com/snatchev/IssueTracker/master/public/installer/github.com.js) in your ~/.js folder
